@@ -1,4 +1,4 @@
-package br.com.gustavobarbozamarques.springbootsecurityjwt.security;
+package br.com.gustavobarbozamarques.springbootsecurityjwt.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package br.com.gustavobarbozamarques.springbootsecurityjwt.security;
+package br.com.gustavobarbozamarques.springbootsecurityjwt.services;
 
 import br.com.gustavobarbozamarques.springbootsecurityjwt.dto.LoginRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package br.com.gustavobarbozamarques.springbootsecurityjwt.controllers;
 
 import br.com.gustavobarbozamarques.springbootsecurityjwt.dto.LoginRequestDTO;
-import br.com.gustavobarbozamarques.springbootsecurityjwt.security.AuthenticationService;
+import br.com.gustavobarbozamarques.springbootsecurityjwt.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

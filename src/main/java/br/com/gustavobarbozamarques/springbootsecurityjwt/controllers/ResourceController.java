@@ -15,15 +15,6 @@ import java.security.Principal;
 @RequestMapping("/api/resource")
 public class ResourceController {
 
-    @GetMapping("/public")
-    @ApiOperation("Anyone can access.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "JWT Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class)
-    })
-    public String publicResource() {
-        return "Public resource, no authentication needed.";
-    }
-
     @GetMapping("/user")
     @PreAuthorize("isAuthenticated()")
     @ApiOperation("Only authenticated users can access")
