@@ -1,10 +1,8 @@
 package br.com.gustavobarbozamarques.springbootsecurityjwt.controllers;
 
 import br.com.gustavobarbozamarques.springbootsecurityjwt.dto.LoginRequestDTO;
+import br.com.gustavobarbozamarques.springbootsecurityjwt.security.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,16 +15,10 @@ import javax.validation.Valid;
 public class AuthController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationService authenticationService;
 
     @PostMapping("/login")
     public String login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
-
-        var authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return null;
+        return authenticationService.login(loginRequestDTO);
     }
 }
