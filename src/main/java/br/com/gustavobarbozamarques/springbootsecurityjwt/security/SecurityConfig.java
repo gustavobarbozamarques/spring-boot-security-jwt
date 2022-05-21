@@ -1,4 +1,4 @@
-package br.com.gustavobarbozamarques.springbootsecurityjwt.config;
+package br.com.gustavobarbozamarques.springbootsecurityjwt.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
