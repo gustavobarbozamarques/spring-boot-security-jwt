@@ -20,20 +20,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        //Disable CSRF to allow POST requests.
         http.csrf().disable();
 
-        //Make login endpoint and swagger-ui public, others endpoints require authentication
         http.authorizeRequests()
-                .antMatchers("/api/auth/login")
+                .antMatchers("/api/public/**")
                 .permitAll()
-                .antMatchers("/api/**")
+                .antMatchers("/api/private/**")
                 .authenticated()
                 .anyRequest()
                 .permitAll();
 
-        //Disable session for a stateless Rest MicroService.
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();

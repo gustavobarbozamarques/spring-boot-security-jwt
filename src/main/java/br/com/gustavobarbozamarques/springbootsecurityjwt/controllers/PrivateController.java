@@ -12,11 +12,10 @@ import springfox.documentation.annotations.ApiIgnore;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api/resource")
-public class ResourceController {
+@RequestMapping("/api/private")
+public class PrivateController {
 
     @GetMapping("/user")
-    @PreAuthorize("isAuthenticated()")
     @ApiOperation("Only authenticated users can access")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "JWT Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class)
@@ -26,7 +25,7 @@ public class ResourceController {
     }
 
     @GetMapping("/admin")
-    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation("Only authenticated users with ADMIN role can access")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "JWT Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class)
