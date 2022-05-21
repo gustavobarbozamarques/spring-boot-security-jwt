@@ -12,15 +12,14 @@ import java.util.stream.Collectors;
 public class AuthenticationService {
 
     @Autowired
-    AuthenticationManagerBuilder authenticationManagerBuilder;
+    private AuthenticationManagerBuilder authenticationManagerBuilder;
+
+    @Autowired
+    private JWTService jwtService;
 
     public String login(LoginRequestDTO loginRequestDTO) {
         var credentials = new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword());
         var authentication = authenticationManagerBuilder.getObject().authenticate(credentials);
-        System.out.println("Authenticated: " + authentication.isAuthenticated());
-        System.out.println("Name: " + authentication.getName());
-        System.out.println("Roles: " + authentication.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.joining(",")));
-        var jwtToken = "";
-        return jwtToken;
+        return jwtService.generateJwtToken(authentication);
     }
 }
