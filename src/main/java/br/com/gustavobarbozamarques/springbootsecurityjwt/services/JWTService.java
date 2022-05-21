@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,9 +18,11 @@ import java.util.stream.Collectors;
 @Service
 public class JWTService {
 
-    private Integer expirationMinutes = 15;
+    @Value("${jwt.expiration.minutes}")
+    private Integer expirationMinutes;
 
-    private String secret = "secretKey";
+    @Value("${jwt.secret}")
+    private String secret;
 
     public String generateJwtToken(Authentication authentication) {
         Date expiration = Date.from(
