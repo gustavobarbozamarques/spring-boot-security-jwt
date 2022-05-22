@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 @Service
-public class JWTService {
+public class JwtService {
 
     @Value("${jwt.expiration.minutes}")
     private Integer expirationMinutes;

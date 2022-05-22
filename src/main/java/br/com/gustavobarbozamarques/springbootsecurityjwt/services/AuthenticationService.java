@@ -6,8 +6,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
-
 @Service
 public class AuthenticationService {
 
@@ -15,7 +13,7 @@ public class AuthenticationService {
     private AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Autowired
-    private JWTService jwtService;
+    private JwtService jwtService;
 
     public String login(LoginRequestDTO loginRequestDTO) {
         var credentials = new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword());

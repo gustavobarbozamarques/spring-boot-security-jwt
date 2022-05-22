@@ -18,7 +18,7 @@ public class PrivateController {
     @GetMapping("/user")
     @ApiOperation("Only authenticated users can access")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "JWT Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class)
+            @ApiImplicitParam(name = "Authorization", value = "Bearer abc...", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class)
     })
     public String userResource(@ApiIgnore Principal principal) {
         return "Welcome user, %s".formatted(principal.getName());
@@ -28,7 +28,7 @@ public class PrivateController {
     @PreAuthorize("hasRole('ADMIN')")
     @ApiOperation("Only authenticated users with ADMIN role can access")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "JWT Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class)
+            @ApiImplicitParam(name = "Authorization", value = "Bearer abc...", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class)
     })
     public String adminResource(@ApiIgnore Principal principal) {
         return "Welcome admin, %s".formatted(principal.getName());
