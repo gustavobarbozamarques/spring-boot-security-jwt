@@ -1,10 +1,10 @@
 package br.com.gustavobarbozamarques.springbootsecurityjwt.services;
 
+import br.com.gustavobarbozamarques.springbootsecurityjwt.enums.TokenTypeEnum;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,16 +18,10 @@ import java.util.stream.Collectors;
 @Service
 public class JwtService {
 
-    @Value("${jwt.expiration.minutes}")
-    private Integer expirationMinutes;
-
-    @Value("${jwt.secret}")
-    private String secret;
-
-    public String generateJwtToken(Authentication authentication) {
+    public String generateJwtToken(Authentication authentication, TokenTypeEnum tokenType) {
         Date expiration = Date.from(
                 LocalDateTime.now()
-                        .plusMinutes(expirationMinutes)
+                        .plusMinutes(tokenType.getExpirationMinutes())
                         .atZone(ZoneId.systemDefault())
                         .toInstant()
         );
@@ -41,11 +35,11 @@ public class JwtService {
                 .withSubject(authentication.getName())
                 .withExpiresAt(expiration)
                 .withClaim("roles", roles)
-                .sign(Algorithm.HMAC256(secret));
+                .sign(Algorithm.HMAC256(tokenType.getSecret()));
     }
 
-    public Authentication extractAuthentication(String jwtToken) {
-        Algorithm algorithm = Algorithm.HMAC256(secret);
+    public Authentication extractAuthentication(String jwtToken, TokenTypeEnum tokenType) {
+        Algorithm algorithm = Algorithm.HMAC256(tokenType.getSecret());
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(jwtToken);
 

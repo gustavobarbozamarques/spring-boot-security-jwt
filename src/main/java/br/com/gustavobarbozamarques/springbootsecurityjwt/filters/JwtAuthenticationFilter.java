@@ -1,11 +1,12 @@
 package br.com.gustavobarbozamarques.springbootsecurityjwt.filters;
 
+import br.com.gustavobarbozamarques.springbootsecurityjwt.enums.TokenTypeEnum;
 import br.com.gustavobarbozamarques.springbootsecurityjwt.services.JwtService;
+import br.com.gustavobarbozamarques.springbootsecurityjwt.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,22 +25,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            var jwtToken = extractJwt(request);
+            var jwtToken = JwtUtils.extractJwt(request.getHeader("Authorization"));
             if (jwtToken != null) {
-                var authentication = jwtService.extractAuthentication(jwtToken);
+                var authentication = jwtService.extractAuthentication(jwtToken, TokenTypeEnum.ACCESS_TOKEN);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
             log.error(e.getMessage());
         }
         filterChain.doFilter(request, response);
-    }
-
-    private String extractJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7);
-        }
-        return null;
     }
 }
