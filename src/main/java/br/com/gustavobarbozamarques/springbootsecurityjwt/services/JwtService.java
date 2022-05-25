@@ -5,6 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,10 +19,22 @@ import java.util.stream.Collectors;
 @Service
 public class JwtService {
 
+    @Value("${jwt.access.token.expiration.minutes}")
+    private Integer jwtAccessTokenExpirationMinutes;
+
+    @Value("${jwt.access.token.secret}")
+    private String jwtAccessTokenSecret;
+
+    @Value("${jwt.refresh.token.expiration.minutes}")
+    private Integer jwtRefreshTokenExpirationMinutes;
+
+    @Value("${jwt.refresh.token.secret}")
+    private String jwtRefreshTokenSecret;
+
     public String generateJwtToken(Authentication authentication, TokenTypeEnum tokenType) {
         Date expiration = Date.from(
                 LocalDateTime.now()
-                        .plusMinutes(tokenType.getExpirationMinutes())
+                        .plusMinutes(tokenType == TokenTypeEnum.ACCESS_TOKEN ? jwtAccessTokenExpirationMinutes : jwtRefreshTokenExpirationMinutes)
                         .atZone(ZoneId.systemDefault())
                         .toInstant()
         );
@@ -35,11 +48,11 @@ public class JwtService {
                 .withSubject(authentication.getName())
                 .withExpiresAt(expiration)
                 .withClaim("roles", roles)
-                .sign(Algorithm.HMAC256(tokenType.getSecret()));
+                .sign(Algorithm.HMAC256(tokenType == TokenTypeEnum.ACCESS_TOKEN ? jwtAccessTokenSecret : jwtRefreshTokenSecret));
     }
 
     public Authentication extractAuthentication(String jwtToken, TokenTypeEnum tokenType) {
-        Algorithm algorithm = Algorithm.HMAC256(tokenType.getSecret());
+        Algorithm algorithm = Algorithm.HMAC256(tokenType == TokenTypeEnum.ACCESS_TOKEN ? jwtAccessTokenSecret : jwtRefreshTokenSecret);
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(jwtToken);
 

@@ -25,7 +25,7 @@ public class PrivateController {
     }
 
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation("Only authenticated users with ADMIN role can access")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "Bearer abc...", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class)
