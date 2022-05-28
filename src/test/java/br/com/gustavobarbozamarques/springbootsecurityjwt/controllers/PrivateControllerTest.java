@@ -33,7 +33,7 @@ public class PrivateControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "username1", password = "pass1", authorities = {"USER"})
+    @WithMockUser(username = "username1", authorities = {"USER"})
     public void testUserResource_whenAuthenticated_shouldReturnOk() throws Exception {
         this.mockMvc
                 .perform(get("/api/private/user"))
@@ -42,7 +42,7 @@ public class PrivateControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "username1", password = "pass1", authorities = {"USER"})
+    @WithMockUser(username = "username1", authorities = {"USER"})
     public void testAdminResource_whenAuthenticatedIsOnlyUser_shouldReturnForbidden() throws Exception {
         this.mockMvc
                 .perform(get("/api/private/admin"))
@@ -51,7 +51,7 @@ public class PrivateControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "username2", password = "pass1", authorities = {"USER", "ADMIN"})
+    @WithMockUser(username = "username2", authorities = {"USER", "ADMIN"})
     public void testAdminResource_whenAuthenticatedIsAdmin_shouldReturnOk() throws Exception {
         this.mockMvc
                 .perform(get("/api/private/admin"))
