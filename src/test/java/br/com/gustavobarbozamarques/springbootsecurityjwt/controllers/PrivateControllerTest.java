@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = PrivateController.class,
@@ -38,7 +39,8 @@ public class PrivateControllerTest {
         this.mockMvc
                 .perform(get("/api/private/user"))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string("Welcome user, username1"));
     }
 
     @Test
@@ -56,6 +58,7 @@ public class PrivateControllerTest {
         this.mockMvc
                 .perform(get("/api/private/admin"))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string("Welcome admin, username2"));
     }
 }
